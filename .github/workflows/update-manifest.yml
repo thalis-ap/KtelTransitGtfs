@@ -2,11 +2,8 @@ name: Update Manifest
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'regions/**/gtfs.zip'
-  workflow_dispatch: # allow manual trigger
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   update-manifest:
@@ -14,13 +11,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: List repository structure
-        run: |
-          pwd
-          ls -la
-          find . -type d -maxdepth 2
-
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -30,18 +21,24 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt || echo "No requirements.txt"
-
       - name: Run manifest updater
         run: python scripts/update_manifest.py
 
+      - name: Show manifest after update (debug)
+        run: |
+          echo "Manifest content:"
+          cat manifest.json
+          echo "Git status:"
+          git status
+
       - name: Commit and push changes
-        if: |
-          steps.update.outputs.changed == 'true'
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add manifest.json
-          git commit -m "chore: update manifest [skip ci]"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update manifest [skip ci]"
+            git push
+          fi
