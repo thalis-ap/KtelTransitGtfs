@@ -1,0 +1,41 @@
+name: Update Manifest
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'regions/**/gtfs.zip'
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt || echo "No requirements.txt"
+
+      - name: Run manifest updater
+        run: python scripts/update_manifest.py
+
+      - name: Commit and push changes
+        if: |
+          steps.update.outputs.changed == 'true'
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add manifest.json
+          git commit -m "chore: update manifest [skip ci]"
+          git push
