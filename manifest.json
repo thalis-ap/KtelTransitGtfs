@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "regions": {
     "lefkada": {
       "name": "\u039b\u03b5\u03c5\u03ba\u03ac\u03b4\u03b1",
@@ -9,8 +9,8 @@
         20.654077
       ],
       "defaultZoom": 10.5,
-      "hash": "87b15de2a585ada32d3ad13c345e107d4ba2016ff416202facacb73be0f0566c",
-      "size": 7220
+      "hash": "8481954629fc220ea74fbd86eb1d887866269c1ecb4f93c34d9f111bcdc777e2",
+      "size": 7217
     },
     "kefalonia": {
       "name": "\u039a\u03b5\u03c6\u03b1\u03bb\u03bf\u03bd\u03b9\u03ac",
