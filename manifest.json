@@ -1,18 +1,24 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "regions": {
     "lefkada": {
-      "name": "Λευκάδα",
+      "name": "\u039b\u03b5\u03c5\u03ba\u03ac\u03b4\u03b1",
       "englishName": "Lefkada",
-      "center": [38.718520, 20.654077],
+      "center": [
+        38.71852,
+        20.654077
+      ],
       "defaultZoom": 10.5,
-      "hash": "1186f2c901db09f0ad72134d7df1edaca9977b7da7e11888479eb450f0d4aeb4",
-      "size": 7213
+      "hash": "87b15de2a585ada32d3ad13c345e107d4ba2016ff416202facacb73be0f0566c",
+      "size": 7220
     },
     "kefalonia": {
-      "name": "Κεφαλονιά",
+      "name": "\u039a\u03b5\u03c6\u03b1\u03bb\u03bf\u03bd\u03b9\u03ac",
       "englishName": "Kefalonia",
-      "center": [38.254425, 20.566609],
+      "center": [
+        38.254425,
+        20.566609
+      ],
       "defaultZoom": 10.0,
       "hash": "2c6a7a0496cda360fba4b6a0dae66ac02943fd03cbc7fdd0626b47ece9bb3b75",
       "size": 1836
