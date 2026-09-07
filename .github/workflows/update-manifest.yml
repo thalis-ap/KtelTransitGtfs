@@ -14,9 +14,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: List region files (debug)
-        run: find regions -type f
-        
+      - name: List repository structure
+        run: |
+          pwd
+          ls -la
+          find . -type d -maxdepth 2
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
