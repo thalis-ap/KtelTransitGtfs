@@ -1,0 +1,86 @@
+name: Process GTFS Upload
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process-upload:
+    # Only run if the issue has the label we defined in our form
+    if: contains(github.event.issue.labels.*.name, 'gtfs-update')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Parse Issue Body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body;
+            
+            // Extract the region from the form output
+            const regionMatch = body.match(/### Select your Region\s+([a-zA-Z0-9_-]+)/);
+            const region = regionMatch ? regionMatch[1].trim() : null;
+            
+            // Extract the markdown URL for the uploaded zip
+            const urlMatch = body.match(/\[.*?\.zip\]\((https:\/\/github\.com\/.*?)\)/);
+            const url = urlMatch ? urlMatch[1].trim() : null;
+            
+            if (!region || !url) {
+              core.setFailed("Could not extract region or zip URL from the issue body.");
+              return;
+            }
+            
+            core.setOutput('region', region);
+            core.setOutput('url', url);
+
+      - name: Download and Replace File
+        run: |
+          REGION="${{ steps.parse.outputs.region }}"
+          URL="${{ steps.parse.outputs.url }}"
+          
+          # Create directory just in case it doesn't exist
+          mkdir -p "regions/$REGION"
+          
+          # Download the new zip, overwriting the old one
+          curl -L -o "regions/$REGION/gtfs.zip" "$URL"
+          
+      - name: Commit and Push
+        run: |
+          REGION="${{ steps.parse.outputs.region }}"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git add "regions/$REGION/gtfs.zip"
+          
+          # Only commit if the file actually changed
+          if git diff --cached --quiet; then
+            echo "No changes in the downloaded zip file."
+          else
+            git commit -m "Update GTFS data for $REGION (Issue #${{ github.event.issue.number }})"
+            git push
+          fi
+
+      - name: Close Issue and Notify
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "✅ GTFS data successfully downloaded and committed to `regions/${{ steps.parse.outputs.region }}`! The manifest update workflow should start shortly to bump the version. Closing this issue."
+            });
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed'
+            });
