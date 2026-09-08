@@ -18,26 +18,51 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Parse Issue Body
+      - name: Parse Issue Body, Map Region, and Check Authorization
         id: parse
         uses: actions/github-script@v7
         with:
           script: |
-            const body = context.payload.issue.body;
-            
-            // Extract the region from the form output
-            const regionMatch = body.match(/### Select your Region\s+([a-zA-Z0-9_-]+)/);
-            const region = regionMatch ? regionMatch[1].trim() : null;
-            
-            // Extract the markdown URL for the uploaded zip
-            const urlMatch = body.match(/\[.*?\.zip\]\((https:\/\/github\.com\/.*?)\)/);
-            const url = urlMatch ? urlMatch[1].trim() : null;
-            
-            if (!region || !url) {
-              core.setFailed("Could not extract region or zip URL from the issue body.");
+            const actor = context.actor;
+
+            // 1. Map Users to Regions
+            const userToRegion = {
+              'ktel-lefkada': 'lefkada',
+              'ktel-kefalonia': 'kefalonia',
+              'thalis-ap': 'lefkada' // Temporarily mapped to lefkada so you can test
+            };
+
+            const region = userToRegion[actor];
+
+            // If the user isn't in our map, kick them out
+            if (!region) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `❌ Permission Denied: @${actor}, your account is not authorized or mapped to a region.`
+              });
+              github.rest.issues.update({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'closed'
+              });
+              core.setFailed(`User @${actor} is not mapped to any region.`);
               return;
             }
+
+            // 2. Extract the ZIP URL
+            const body = context.payload.issue.body;
             
+            const urlMatch = body.match(/\[.*?\.zip\]\((https:\/\/github\.com\/.*?)\)/);
+            const url = urlMatch ? urlMatch[1].trim() : null;
+
+            if (!url) {
+              core.setFailed("Could not extract zip URL from the issue body.");
+              return;
+            }
+
             core.setOutput('region', region);
             core.setOutput('url', url);
 
