@@ -85,3 +85,7 @@ jobs:
               repo: context.repo.repo,
               state: 'closed'
             });
+      - name: Trigger Manifest Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run update-manifest.yml
