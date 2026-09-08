@@ -1,0 +1,22 @@
+name: "Upload GTFS Data"
+description: "Submit a new gtfs.zip file for your region."
+title: "GTFS Update: "
+labels: ["gtfs-update"]
+body:
+  - type: dropdown
+    id: region
+    attributes:
+      label: Select your Region
+      description: Choose the KTEL agency/region you are uploading data for.
+      options:
+        - lefkada
+        - kefalonia
+    validations:
+      required: true
+  - type: textarea
+    id: gtfs_zip
+    attributes:
+      label: Upload gtfs.zip
+      description: Drag and drop your `gtfs.zip` file here. Wait a moment for the upload to finish (you will see a markdown link appear in the box).
+    validations:
+      required: true
