@@ -29,7 +29,7 @@ jobs:
             const userToRegion = {
               'ktel-lefkada': 'lefkada',
               'ktel-kefalonia': 'kefalonia',
-              'thalis-ap': 'andros' // Temporarily mapped to lefkada so you can test
+              'thalis-ap': 'lefkada' // Temporarily mapped to lefkada so you can test
             };
 
             const region = userToRegion[actor];
