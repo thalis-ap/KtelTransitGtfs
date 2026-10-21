@@ -1,5 +1,5 @@
 {
-  "version": "1.0.38",
+  "version": "1.0.39",
   "regions": {
     "lefkada": {
       "name": "\u039b\u03b5\u03c5\u03ba\u03ac\u03b4\u03b1",
@@ -31,8 +31,8 @@
         24.851032
       ],
       "defaultZoom": 10.5,
-      "hash": "f692dca42459b557426ba626af261373c9e9a6077ebe1e5a9ab5e0f082b0894c",
-      "size": 63544
+      "hash": "2fc293937ca6a9ed1b5504cdd276cea60715fca29a149c9e73c9ff863b76e473",
+      "size": 65907
     }
   }
 }
