@@ -22,6 +22,17 @@
       "defaultZoom": 10.0,
       "hash": "2c6a7a0496cda360fba4b6a0dae66ac02943fd03cbc7fdd0626b47ece9bb3b75",
       "size": 1836
+    },
+    "andros": {
+      "name": "Άνδρος",
+      "englishName": "Andros",
+      "center": [
+          37.853492,
+          24.851032
+      ],
+      "defaultZoom": 10.5,
+      "hash":"0",
+      "size":0
     }
   }
 }
