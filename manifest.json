@@ -1,5 +1,5 @@
 {
-  "version": "1.0.37",
+  "version": "1.0.38",
   "regions": {
     "lefkada": {
       "name": "\u039b\u03b5\u03c5\u03ba\u03ac\u03b4\u03b1",
@@ -24,15 +24,15 @@
       "size": 1836
     },
     "andros": {
-      "name": "Άνδρος",
+      "name": "\u0386\u03bd\u03b4\u03c1\u03bf\u03c2",
       "englishName": "Andros",
       "center": [
-          37.853492,
-          24.851032
+        37.853492,
+        24.851032
       ],
       "defaultZoom": 10.5,
-      "hash":"0",
-      "size":0
+      "hash": "f692dca42459b557426ba626af261373c9e9a6077ebe1e5a9ab5e0f082b0894c",
+      "size": 63544
     }
   }
 }
